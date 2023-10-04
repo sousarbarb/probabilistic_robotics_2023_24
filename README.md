@@ -35,12 +35,23 @@ sudo apt install octave liboctave-dev
 
 ### LaTeX
 
-**Generic Usage**
+**Build**
 
 ```sh
 cd <project dir>
-pdflatex <main tex filename>.tex
+latexmk -bibtex -pdf    # First time to generate bibliography references
+latexmk -bibtex -pdf    # Final PDF (when using .bib files...)
 ```
+
+**Clean**
+
+```sh
+latexmk -C
+```
+
+See
+[latexmk documentation](https://ftp.eq.uc.pt/software/TeX/support/latexmk/latexmk.pdf)
+for more information.
 
 ### Octave
 
