@@ -29,6 +29,18 @@ sudo apt update
 sudo apt install octave liboctave-dev
 ```
 
+## Usage
+
+### LaTeX
+
+TBC
+
+### Octave
+
+```sh
+
+```
+
 ## Acknowledgements
 
 A special thanks to Prof. Dr. Giorgio Grisetti
