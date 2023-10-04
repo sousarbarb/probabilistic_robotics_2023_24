@@ -17,7 +17,9 @@ relative to the academic year 2020/2021
 ```sh
 sudo apt update
 sudo apt install texlive-full
+tex --version
 latex --version
+pdflatex --version
 ```
 
 TBC
@@ -33,7 +35,12 @@ sudo apt install octave liboctave-dev
 
 ### LaTeX
 
-TBC
+**Generic Usage**
+
+```sh
+cd <project dir>
+pdflatex <main tex filename>.tex
+```
 
 ### Octave
 

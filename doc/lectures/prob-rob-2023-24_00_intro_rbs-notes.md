@@ -3,7 +3,7 @@
 _(2023/09/25)_
 
 - [Slides](/doc/lectures/prob-rob-2023-24_00_intro.pdf) (2023/2024)
-- [YouTube Video](https://www.youtube.com/live/T41gYBSYF2c) (2020/2021)
+- [YouTube Video](https://www.youtube.com/watch?v=T41gYBSYF2c) (2020/2021)
 
 ## Thanks to
 
