@@ -1,6 +1,6 @@
 # Prob-Rob-2020-21_Robots+Sensores (RBS Notes)
 
-_(2023/09/26)_
+_(2023/09/25)_
 
 - [Slides](/doc/lectures/prob-rob-2023-24_01_robots+sensors.pdf) (2023/2024)
 - [YouTube Video](https://www.youtube.com/watch?v=tgFW4y0TY6c) (2020/2021)
