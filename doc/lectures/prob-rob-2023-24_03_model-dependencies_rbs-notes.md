@@ -3,7 +3,7 @@
 _(2023/09/26)_
 
 - [Slides](/doc/lectures/prob-rob-2023-24_03_model-dependencies.pdf) (2023/2024)
-- [YouTube](https://www.youtube.com/watch?v=gcpfsMkv6zw)
+- [YouTube Video](https://www.youtube.com/watch?v=gcpfsMkv6zw)
 
 ## Considerations about dimensions
 
