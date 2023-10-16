@@ -3,7 +3,8 @@ close all
 clear
 clc
 
-#check input
+#check input (argv returns the arguments inserted when you call your program)
+#octave-cli grid_orazio.m maps/map.txt     >>> maps/map.txt is the 1st argument
 if length(argv) == 0
   printf("no input map provided - run: octave grid_orazio maps/map.txt\n");
   return;
@@ -13,9 +14,11 @@ endif
 global map = getMap(argv(){1});
 
 #initialize actual robot position x,y (not a state visible to the robot)
+#note that the position ( rows(map)-1 , 2 ) is a free one!
 global state_ground_truth = [rows(map)-1, 2];
 
 #initialize robot states: position belief values over the complete grid
+#the initialization considers an UNIFORM DISTRIBUTION over all map positions
 number_of_free_cells = rows(map)*columns(map);
 belief_initial_value = 1/(number_of_free_cells);
 global state_belief = ones(rows(map), columns(map))*belief_initial_value;
@@ -68,9 +71,20 @@ function keyPressed (src_, event_)
 #---------------------------------- FILTERING ----------------------------------
 
   #retrieve new robot position according to our transition model
+  #1. generate random probability
+  #2. evaluate the transition model considering the current ground truth
+  #   position , map , and control input
+  #3. move the robot according to the transition model!
+  #   (robot may move according to the control, in diagonall or stay depending
+  #    on the probability matrix!)
   state_ground_truth = getNextState(map, state_ground_truth, control_input);
   
   #obtain current observations according to our observation model
+  #1. generate random probability
+  #2. evaluate the observation model over the 16 possible configurations of the
+  #   4 bumpers!
+  #3. generate the current observation according to minimum probability and
+  #   observation model
   observations = getObservations(map, state_ground_truth(1), state_ground_truth(2));
 
   #PREDICT robot position belief
