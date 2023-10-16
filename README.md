@@ -8,7 +8,8 @@ repository
 [probabilistic_robotics_2023_24](https://gitlab.com/grisetti/probabilistic_robotics_2023_24).
 For accessing the recorded videos from the lectures, the ones available are
 relative to the academic year 2020/2021
-([probabilistic_robotics_2020_21/lectures](https://sites.google.com/diag.uniroma1.it/probabilistic-robotics-2020-21/lectures)).
+([probabilistic_robotics_2020_21/lectures](https://sites.google.com/diag.uniroma1.it/probabilistic-robotics-2020-21/lectures)) and 2021/22
+([probabilistic_robotics_2021_22/lectures](https://sites.google.com/diag.uniroma1.it/probabilistic-robotics-2021-22/lectures)).
 
 ## Setup
 
