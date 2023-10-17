@@ -57,7 +57,11 @@ for more information.
 ### Octave
 
 ```sh
+# Octave Graphical User Interface (GUI)
+octave --gui
 
+# Octave Command Line Interface (CLI)
+octave-cli
 ```
 
 ## Acknowledgements
