@@ -76,13 +76,14 @@ function [mu, sigma] = correction(mu, sigma, landmarks, observations)
 
   %observation noise
   noise = 0.01;
-  sigma_z = diag(ones(1,num_landmarks_seen*2).*noise);
-  
+  sigma_z = eye(2*num_landmarks_seen)*noise;
   %Kalman gain
   K = sigma * C_t' / (sigma_z + C_t * sigma * C_t');
 
   %update mu
-  mu = mu + K * (z_t - h_t);
+  error = (z_t - h_t);
+  correction = K*error;
+  mu = mu + correction;
 
   %update sigma
   sigma = (eye(state_dim) - K * C_t) * sigma;

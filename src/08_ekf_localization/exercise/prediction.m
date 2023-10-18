@@ -35,16 +35,16 @@ function [mu, sigma] = prediction(mu, sigma, transition)
 
 	%Jacobian A
 	A = [
-		1 , 0 , -u_x * sin(mu_theta) ;
-		0 , 1 ,  u_x * cos(mu_theta) ;
+		1 , 0 , -u_x * s ;
+		0 , 1 ,  u_x * c ;
 		0 , 0 ,  1 ;
 	];
 
 
 	%Jacobian B
 	B = [
-		cos(mu_theta) , 0 ;
-		sin(mu_theta) , 0 ;
+		c , 0 ;
+		s , 0 ;
 		0 , 1 ;
 	];
 
@@ -53,7 +53,7 @@ function [mu, sigma] = prediction(mu, sigma, transition)
 	v_noise = u_x^2;	 	%lin vel dependent part
 	w_noise = u_theta^2;		%ang vel dependent part
 
-	sigma_u = diag([ noise + v_noise , noise + w_noise ]);
+	sigma_u = diag([ noise ^ 2 + v_noise , noise ^ 2 + w_noise ]);
 
 	%predict sigma
 	sigma = A * sigma * A' + B * sigma_u * B' ;
