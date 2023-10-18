@@ -60,30 +60,31 @@ function [mu, sigma] = correction(mu, sigma, landmarks, observations)
     ly = current_land.y_pose;
 
     %where I should see that landmark
-    % t= %TODO;
-    % measure_prediction = %TODO;
+    l = [lx; ly];
+    t = [mu_x; mu_y];
+    measure_prediction = Rt * (l - t);
 
     % current landmark observation
     h_it = [measure_prediction(1); measure_prediction(2)]; 
     h_t = [h_t; h_it]; % stack current observation into our obs vec 
 
     %compute its Jacobian
-    %C = [%TODO ];
+    C = [-Rt, Rtp * (l - t)];
 
     C_t = [C_t; C];
   endfor
 
   %observation noise
   noise = 0.01;
-  %sigma_z = %TODO;
+  sigma_z = diag(ones(1,num_landmarks_seen*2).*noise);
   
   %Kalman gain
-  %K = %TODO;
+  K = sigma * C_t' / (sigma_z + C_t * sigma * C_t');
 
   %update mu
-  %mu = %TODO;
+  mu = mu + K * (z_t - h_t);
 
   %update sigma
-  %sigma = %TODO;		
+  sigma = (eye(state_dim) - K * C_t) * sigma;
 
 end

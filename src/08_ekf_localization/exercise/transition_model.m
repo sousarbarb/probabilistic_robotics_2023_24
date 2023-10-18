@@ -27,8 +27,8 @@ function mu_prime = transition_model(mu, u)
 	s = sin(mu_theta);
 
 	%TODO
-	% mu_prime(1) = 
-	% mu_prime(2) = 
-	% mu_prime(3) = 
+	mu_prime(1) = mu_x + ux * c;
+	mu_prime(2) = mu_y + ux * s;
+	mu_prime(3) = mu_theta + utheta;
 
 end
