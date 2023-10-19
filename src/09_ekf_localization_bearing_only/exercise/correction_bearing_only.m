@@ -76,7 +76,7 @@ function [mu, sigma] = correction_bearing_only(mu, sigma, landmarks, observation
 
   %observation noise
   noise = 0.01;
-  sigma_z = eye(num_landmarks_seen) * (noise ^ 2);
+  sigma_z = eye(num_landmarks_seen) * noise;
 
   %Kalman gain
   K = sigma * C_t' / (sigma_z + C_t * sigma * C_t');
