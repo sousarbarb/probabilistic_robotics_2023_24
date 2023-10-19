@@ -59,13 +59,16 @@ function [mu, sigma] = correction_bearing_only(mu, sigma, landmarks, observation
     ly = current_land.y_pose;
 
     %where I should see that landmark
-    % t= %TODO;
-    % bearing_prediction = %TODO;
+    l = [lx; ly];
+    t = [mu_x; mu_y];
+    measure_prediction = Rt * (l - t);
+    bearing_prediction = atan2( measure_prediction(2) , measure_prediction(1) );
 
     h_t = [h_t; bearing_prediction]; % stack bearing prediction into obs vec
 
     %compute its Jacobian
-    %C = [%TODO ];
+    C = [-measure_prediction(2), measure_prediction(1)] * [-Rt, Rtp * (l - t)];
+    C = C ./ (sum(measure_prediction .^ 2));
 
     C_t = [C_t; C];
 
@@ -73,15 +76,17 @@ function [mu, sigma] = correction_bearing_only(mu, sigma, landmarks, observation
 
   %observation noise
   noise = 0.01;
-  %sigma_z = %TODO;
+  sigma_z = eye(num_landmarks_seen) * (noise ^ 2);
 
   %Kalman gain
-  %K = %TODO;
+  K = sigma * C_t' / (sigma_z + C_t * sigma * C_t');
 
   %update mu
-  %mu = %TODO;
+  error = (z_t - h_t);
+  correction = K*error;
+  mu = mu + correction;
 
   %update sigma
-  %sigma = %TODO;
+  sigma = (eye(state_dim) - K * C_t) * sigma;
 
 end

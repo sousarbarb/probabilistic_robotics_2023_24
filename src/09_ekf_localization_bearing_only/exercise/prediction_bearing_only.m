@@ -31,23 +31,31 @@ function [mu, sigma] = prediction_bearing_only(mu, sigma, transition)
 	c = cos(mu_theta);
 
 	%Jacobian A
-	% A = [%TODO];
+	A = [
+		1 , 0 , -u_x * s ;
+		0 , 1 ,  u_x * c ;
+		0 , 0 ,  1 ;
+	];
 
 
 	%Jacobian B
-	%B = [%TODO];
+	B = [
+		c , 0 ;
+		s , 0 ;
+		0 , 1 ;
+	];
 
 	%predict mu // this is our f(x,u) function in the slides
-	mu = transition_model(mu, u); %TODO
+	mu = transition_model(mu, u);
 
 	%motion noise
 	noise = 0.1; 			%constant part
 	v_noise = u_x^2;	 	%lin vel dependent part
 	w_noise = u_theta^2;		%ang vel dependent part
 
-	%sigma_u = [%TODO];
+	sigma_u = diag([ noise ^ 2 + v_noise , noise ^ 2 + w_noise ]);
 
 	%predict sigma
-	%sigma = %TODO;
+	sigma = A * sigma * A' + B * sigma_u * B' ;
 
 end
