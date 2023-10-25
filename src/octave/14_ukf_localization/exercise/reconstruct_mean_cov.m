@@ -16,15 +16,15 @@ function [mu, sigma] = reconstruct_mean_cov(sigmaP, wM, wC)
 	mu = zeros(state_dim,1);
 	%populate mean
 	for i=1:num_of_sigma_points
-		mu += #TODO;
+		mu += wM(i) * sigmaP(:,i);
 	endfor
 	
 	%initialize covariance
 	sigma = zeros(state_dim,state_dim);
 	%populate covariance
 	for i=1:num_of_sigma_points
-		delta = #TODO;
-		sigma += #TODO;
+		delta = sigmaP(:,i) - mu;
+		sigma += wC(i) * delta * delta';
 	endfor
 end
 

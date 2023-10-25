@@ -24,16 +24,16 @@ function [sigmaP, weightsM, weightsC] = compute_sigma_points(mu, sigma)
 	weightsC = zeros(num_of_sigma_points,1);
 
 	%% STEP 1: compute weights
-	weightsM(1) = #TODO;
-	weightsC(1) = #TODO;
+	weightsM(1) = lambda / (state_dim + lambda);
+	weightsC(1) = weightsM(1) + (1-alpha^2+bet);
 
 	
 	%% STEP 2: compute sigma points
-	sigmaP(:,1) = #TODO;
+	sigmaP(:,1) = mu;
 
 
 	%compute the other weights
-	weight_value = #TODO;
+	weight_value = 0.5 / (state_dim + lambda);
 	weightsM(2:end) = repmat(weight_value, num_of_sigma_points-1,1);
 	weightsC(2:end) = weightsM(2:end);
 
@@ -46,9 +46,9 @@ function [sigmaP, weightsM, weightsC] = compute_sigma_points(mu, sigma)
 	for i=1:state_dim
 		L_i = L(:,i);
 		%half of the remaining 2*state_dim sigma points
-		sigmaP(:,point_idx) = #TODO;
+		sigmaP(:,point_idx) = mu - L_i;
 		point_idx++;
-		sigmaP(:,point_idx) = #TODO;
+		sigmaP(:,point_idx) = mu + L_i;
 		point_idx++;
 	end
 endfunction

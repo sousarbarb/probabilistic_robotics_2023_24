@@ -61,20 +61,20 @@ function [mu, sigma] = correction(sigmaP, weightsM, weightsC, landmarks, observa
 
 	Sigma_xz = zeros(state_dim, 2*num_landmarks_seen);
 	for i=1:size(sigmaP,2)
-		delta_x   = #TODO;
-		delta_z   = #TODO;
-		Sigma_xz += #TODO;
+		delta_x   = sigmaP(:,i) - mu;
+		delta_z   = predicted_sigma_z(:,i) - mu_z;
+		Sigma_xz += weightsC(i) * delta_x * delta_z';
 	end
 
 	%Kalman gain
 	K = Sigma_xz * inv(Sigma_z + Sigma_noise);
 
 	%update mu
-	error      = #TODO;
-	correction = #TODO;
+	error      = z_t - mu_z;
+	correction = K * error;
 	mu = mu + correction;
 
 	%update sigma
-	sigma = #TODO;
+	sigma = sigma - K * Sigma_xz';
 end
 
