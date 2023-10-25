@@ -52,11 +52,11 @@ function observations = associateLandmarkIDs(mu, sigma, observations, state_to_i
 		[measurement_prediction, C] = measurement_function(state_dim, mu_robot, mu_curr_landmark, id_state);
 
     %compute the covariance and its inverse
-		sigma_zx = %TODO minimum uncertainty (check dimensions)
-		sigma_nn = %TODO covariance for the current landmark
+		sigma_zx = eye(2) * 0.01;   % NOT VERY CLEAR HERE, but its the sigma_const for reduce imapact of linearization approximation
+		sigma_nn = C * sigma * C' + sigma_zx;
 
     %compute information matrix
-		omega_nn = %TODO canonical representation of sigma_nn
+		omega_nn = inv(sigma_nn)
 
     %for all measurements
 		for m=1:M
@@ -66,7 +66,7 @@ function observations = associateLandmarkIDs(mu, sigma, observations, state_to_i
 			z = [measurement.x_pose; measurement.y_pose];
 
 			%compute likelihood for this measurement and landmark
-			A(m, n) = %TODO likelihood with information matrix (omega)
+			A(m, n) = ( z - measurement_prediction )' * omega_nn * ( z - measurement_prediction );
 		endfor
 
     %move to the next landmark in the state
@@ -98,11 +98,14 @@ function observations = associateLandmarkIDs(mu, sigma, observations, state_to_i
 		[a_mn, min_index] = min(A(m,:));
 
     %if the association passes the gate
-		if(%TODO add gating condition for this association
+		if(a_mn < gating_tau)
 		
 			%add the possible association - creating the associations vector
       %[measurement id, proposed landmark id , association matrix value a_mn] 
-			associations = [associations; ]; %TODO add the information to our bookkeeping
+			associations = [
+				associations;
+				m , min_index , a_mn
+			];
 		endif
   endfor
 
@@ -118,7 +121,7 @@ function observations = associateLandmarkIDs(mu, sigma, observations, state_to_i
 		min_on_column = min(A(:, proposed_landmark_id));
 
     %if the association is not the minimum in the column
-		if(%TODO check if it is NOT a best friend
+		if (a_mn ~= min_on_column)
 			associations(i, 2) = 0; %discard association, it is doubtful
 		endif
 	endfor
@@ -145,7 +148,8 @@ function observations = associateLandmarkIDs(mu, sigma, observations, state_to_i
 			second_col_min_value = ordered_col(2);
 
 			%check if the association is ambiguous
-			if(%TODO check if it is NOT a lonely best friend
+			if ((second_row_min_value - a_mn < lonely_best_friend_gamma_threshold) || ...
+					(second_col_min_value - a_mn < lonely_best_friend_gamma_threshold))
 
         %discard association, it is doubtful
 				associations(i,2) = 0;
