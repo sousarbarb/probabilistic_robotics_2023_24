@@ -76,5 +76,6 @@ function [mu, sigma] = correction(sigmaP, weightsM, weightsC, landmarks, observa
 
 	%update sigma
 	sigma = sigma - K * Sigma_xz';
+	%sigma = sigma - K*(Sigma_z + Sigma_noise)*K'; THIS IS ALSO EQUIVALENT!
 end
 
