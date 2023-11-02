@@ -22,7 +22,9 @@ function samples = prediction(samples, transition)
 		%sample noise here and apply
 		noise_x = (rand() - 0.5)*a1;
 		noise_theta = (rand() - 0.5)*a2;
+
+		u_input = [ u_x + noise_x , 0.0 , u_theta + noise_theta ]';
 		
-		samples(:,i) = %TODO;
+		samples(:,i) = motion_model( samples(:,i) , u_input );
 	end
 endfunction

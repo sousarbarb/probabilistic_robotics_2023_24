@@ -37,12 +37,14 @@ function weights = update(samples, weights, landmarks, observations)
 			landmark = landmarks(n);
 			land_x = landmark.x_pose;
 			land_y = landmark.y_pose;
-			[curr_h, _] = measurement_function(particle, [land_x; land_y]);
+			land = [land_x; land_y];
+			[curr_h,  ] = measurement_function(particle, land);
 
 			for m=1:num_landmarks_seen
 				measurement = observations.observation(m);
-				delta = %TODO;
-				l_mn(m,n) = %TODO;
+				measure = [measurement.x_pose; measurement.y_pose];
+				delta = curr_h - measure;
+				l_mn(m,n) = exp(-delta' * Omega_z_noise * delta);
 			endfor
 		endfor
 		
@@ -57,7 +59,7 @@ function weights = update(samples, weights, landmarks, observations)
 
 		sum_of_negative_log_likelihood = sum(negative_log_likelihood);
 
-		weights(i) *= %TODO;
+		weights(i) *= sum_of_negative_log_likelihood;
 
 	endfor
 
