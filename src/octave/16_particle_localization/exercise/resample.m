@@ -16,7 +16,7 @@ function [new_samples, new_weights] = resample(samples, weights, dim_samples)
 	new_weights = ones(1,dim_samples)/dim_samples;
 
 	for i=1:dim_samples
-		new_samples(:,i) = samples(indices(i));
+		new_samples(:,i) = samples(:,indices(i));
 	endfor
 
 endfunction
