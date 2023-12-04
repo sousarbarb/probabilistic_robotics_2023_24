@@ -1,12 +1,12 @@
 close all
-clear
+clear all
 clc
 
 #import 2d geometry utils
 source "../tools/utilities/geometry_helpers_2d.m"
 
-#source "exercise/ls_calibrate_odometry.m"
-source "solution/ls_calibrate_odometry.m"
+source "exercise/ls_calibrate_odometry.m"
+#source "solution/ls_calibrate_odometry.m"
 
 h = figure(1);
 
@@ -40,4 +40,4 @@ COdom=apply_odometry_correction(X,Z(:,4:6));
 CalTrajectory=compute_odometry_trajectory(COdom);
 hold on;
 plot(CalTrajectory(:,1),CalTrajectory(:,2), 'b-', 'linewidth', 2);
-waitfor(h);
+#waitfor(h);
