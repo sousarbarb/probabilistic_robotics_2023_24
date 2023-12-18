@@ -1,0 +1,6 @@
+#########################
+open octave-cli
+
+run icpOnManifold inside octave
+
+#########################
