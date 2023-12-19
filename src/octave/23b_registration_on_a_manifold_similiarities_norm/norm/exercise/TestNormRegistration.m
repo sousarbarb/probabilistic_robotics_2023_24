@@ -1,7 +1,8 @@
-source '../../tools/utilities/geometry_helpers_3d.m'
+source '../../../tools/utilities/geometry_helpers_3d.m'
 
 # initialize a random set of points
-moving_cloud = 100 * randn(3,100);
+num_points = 100;
+moving_cloud = 100 * randn(3,num_points);
 
 # ground truth pose that we want to estimate
 euclidian_pose = [0.10,-0.5,0.01,pi/8,-pi/8,pi/8]';
@@ -12,12 +13,15 @@ ground_truth_pose = v2t(euclidian_pose);
 %% TODO generate a set of measurements consistent with the error
 %% function :)
 %% the world sits at euclidean_pose w.r.t. the robot
-measurements = 
+moving_cloud_hom = ones(4, num_points);
+moving_cloud_hom(1:3,:) = moving_cloud;
+measurements = ground_truth_pose * moving_cloud_hom;
+measurements = measurements(1:3,:);
+
+measurements = measurements ./ sqrt(sum( measurements .^ 2 ))
 
 # we don't have any prior knowledge about the uncertanty of individual points
 omega = eye(3);
-
-num_points = size(measurements,1);
 
 # initial guess for the pose
 X = eye(4);
@@ -30,20 +34,26 @@ for i=1:num_iterations
   # initialize the quantities of the inner loop
   chi_iteration = 0;
   
-  H = % how big will my H be <-------------- ????
-  b = % how big will my b be <-------------- ????
+  H = zeros(6,6);
+  b = zeros(6,1);
 
   for j=1:num_points
+
     # compute error and jacobian and update approximate hessian and gradient
     measurement = measurements(:,j);
     point = moving_cloud(:,j);
+
     [e,J] = errorAndJacobianNormRegistration(X,point,measurement);
+
     # approximate hessian of e'* omega *e
-    H = J*omega*J';
+    H += J'*omega*J;
+
     # gradient of e'* omega * e
-    b = e'*omega*J;
+    b += J'*omega*e;
+
     # take track of the chi square
     chi_iteration += e'*e;
+
   endfor
   # update the current estimate
   chi_square(i) = chi_iteration;
